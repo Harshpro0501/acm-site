@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GGSIP University USS ACM Student Chapter</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --fg:#0b1f6b;
+    --bg:#fff;
+    --title:#111111;
+    --ph:#d9d9d9;
+    --line:#111111;
+    --card:rgba(255,255,255,.22);
+    --card-line:rgba(255,255,255,.55);
+    --shadow:rgba(10,20,80,.16);
+    --pad:clamp(12px,3vw,40px);
+  }
+
+  :root[data-theme="dark"] {
+    --fg:#e9ecff;
+    --bg:#000;
+    --title:#f4f5ff;
+    --ph:#1b1b22;
+    --line:#f4f5ff;
+    --card:rgba(255,255,255,.07);
+    --card-line:rgba(255,255,255,.14);
+    --shadow:rgba(0,0,0,.55);
+  }
+
+  *,*::before,*::after {
+    box-sizing:border-box;
+  }
+
+  html {
+    background:var(--bg);
+  }
+
+  body {
+    margin:0;
+    background:var(--bg);
+    color:var(--title);
+    font-family:'DM Sans', Helvetica, Arial, sans-serif;
+  }
+
+  body, h2, h3, p, .card, .ph, .ui, footer, .bearers h2 {
+    transition:color .9s ease, background-color .9s ease, border-color .9s ease;
+  }
+
+  /* ORIGINAL WEBGL GRADIENT — UNTOUCHED */
+  canvas#c {
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  main {
+    position:relative;
+    z-index:1;
+  }
+
+  /*
+    React navbar container.
+    React's GlassSurface is rendered into #root.
+  */
+  .nav {
+    position:fixed;
+    z-index:10;
+    top:calc(14px + env(safe-area-inset-top,0px));
+    left:12px;
+    right:12px;
+    height:64px;
+    pointer-events:none;
+  }
+
+  /*
+    Kept because the ORIGINAL WebGL script references #glass.
+    It is invisible; React Bits supplies the actual glass.
+  */
+  .nav #glass {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    opacity:0;
+    pointer-events:none;
+  }
+
+  #root {
+    position:relative;
+    width:100%;
+    height:64px;
+    pointer-events:auto;
+  }
+
+  /* Hero */
+  .top {
+    position:relative;
+  }
+
+  .first {
+    height:100vh;
+    height:100svh;
+    min-height:520px;
+  }
+
+  .sr {
+    position:absolute;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    white-space:nowrap;
+  }
+
+  .cards {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:clamp(10px,1.4vw,20px);
+    padding:0 var(--pad) 110px;
+  }
+
+  .card {
+    background:var(--card);
+    border:1px solid var(--card-line);
+    border-radius:18px;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    padding:clamp(18px,2.4vw,36px);
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    gap:clamp(10px,1.6vw,24px);
+    aspect-ratio:3/4;
+  }
+
+  .card h3 {
+    margin:0;
+    color:var(--fg);
+    font-size:clamp(18px,2vw,30px);
+    font-weight:700;
+  }
+
+  .card p {
+    margin:0;
+    font-size:clamp(13px,1.35vw,20px);
+    line-height:1.6;
+    font-weight:400;
+  }
+
+  .ui {
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    color:var(--fg);
+    padding:20px var(--pad);
+    padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));
+    font-size:13px;
+    pointer-events:none;
+  }
+
+  button {
+    pointer-events:auto;
+    font:inherit;
+    color:inherit;
+    background:none;
+    border:1px solid currentColor;
+    border-radius:40px;
+    padding:10px 20px;
+    cursor:pointer;
+    transition:background .2s, color .2s;
+  }
+
+  button:hover,
+  button:focus-visible {
+    background:var(--fg);
+    color:var(--bg);
+    outline:none;
+  }
+
+  .btns {
+    display:flex;
+    gap:10px;
+  }
+
+  /* Page sections */
+  .sec {
+    padding:clamp(24px,4vw,56px) var(--pad) clamp(32px,6vw,90px);
+  }
+
+  .sec h2 {
+    margin:0 0 clamp(14px,2vw,28px);
+    font-weight:500;
+    font-size:clamp(28px,4.4vw,64px);
+    line-height:1.1;
+  }
+
+  .ph {
+    background:var(--ph);
+  }
+
+  .wide {
+    width:100%;
+    aspect-ratio:2.15/1;
+  }
+
+  .bearers {
+    padding-top:0;
+  }
+
+  .bearers h2 {
+    font-weight:400;
+    text-transform:uppercase;
+    font-size:clamp(30px,5.5vw,80px);
+    line-height:1.15;
+    padding:clamp(12px,1.6vw,24px) 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    margin:0 0 clamp(20px,3vw,44px);
+  }
+
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:clamp(8px,1.4vw,20px);
+  }
+
+  .grid .ph {
+    aspect-ratio:3/4;
+  }
+
+  footer {
+    border-top:1px solid var(--line);
+    padding:24px var(--pad) calc(40px + env(safe-area-inset-bottom,0px));
+    font-size:13px;
+    text-align:center;
+    opacity:.75;
+  }
+
+  @media (max-width:800px) {
+    .first {
+      min-height:560px;
+    }
+
+    .cards {
+      grid-template-columns:1fr;
+    }
+
+    .card {
+      aspect-ratio:auto;
+    }
+
+    .grid {
+      grid-template-columns:repeat(3,1fr);
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ORIGINAL WEBGL GRADIENT CANVAS -->
+<canvas id="c"></canvas>
+
+<!-- NAVBAR: old glass canvas retained invisibly for original shader compatibility -->
+<div class="nav">
+  <canvas id="glass"></canvas>
+
+  <!-- React mounts GlassSurface here -->
+  <div id="root"></div>
+</div>
+
+<main>
+
+  <header class="top">
+
+    <section class="first">
+      <h1 class="sr">
+        GGSIP University USS<br>
+        ACM Student Chapter
+      </h1>
+    </section>
+
+    <section class="cards">
+
+      <article class="card">
+        <h3>USICT ACM</h3>
+        <p>
+          Placeholder text. A student community for people who love computing,
+          with workshops, hackathons, talks and study groups where members
+          learn, build and grow together.
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>Our Aim</h3>
+        <p>
+          Placeholder text. To create a fun and collaborative space where
+          technology enthusiasts can explore, learn and share knowledge,
+          and build a culture of continuous learning.
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>Our Mission</h3>
+        <p>
+          Placeholder text. To bridge the gap between academics and industry
+          by nurturing skills, curiosity and community, empowering every
+          member to code, create and contribute.
+        </p>
+      </article>
+
+    </section>
+
+    <div class="ui">
+      <span>Move your mouse.</span>
+
+      <div class="btns">
+        <button id="mode" type="button" aria-pressed="false">
+          Dark mode
+        </button>
+
+        <button id="shuffle" type="button">
+          Shuffle
+        </button>
+      </div>
+    </div>
+
+  </header>
+
+  <section class="sec">
+    <h2>Announcements</h2>
+    <div class="ph wide"></div>
+  </section>
+
+  <section class="sec bearers">
+
+    <h2>
+      Our Office<br>
+      Bearers
+    </h2>
+
+    <div class="grid">
+      <div class="ph"></div>
+      <div class="ph"></div>
+      <div class="ph"></div>
+      <div class="ph"></div>
+      <div class="ph"></div>
+      <div class="ph"></div>
+      <div class="ph"></div>
+      <div class="ph"></div>
+      <div class="ph"></div>
+      <div class="ph"></div>
+    </div>
+
+  </section>
+
+  <footer>
+    &copy; GGSIP University USS ACM Student Chapter
+  </footer>
+
+</main>
+
+<!-- ========================================================= -->
+<!-- ORIGINAL WEBGL GRADIENT SCRIPT — DO NOT CHANGE ANYTHING  -->
+<!-- ========================================================= -->
+
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const gl = canvas.getContext('webgl', { antialias:true, alpha:false, preserveDrawingBuffer:true });
+  if (!gl) return;
+
+  const P = {
+    colors: ['#d4eeff','#8fb4ff','#5f80e0','#b3ddff'],
+    colorSize: 1.4,
+    colorSpacing: .52,
+    colorSpread: 4.52,
+    colorRotation: -0.381592653589793,
+    colorOffset: [-0.7741174697875977, -0.20644775390624992],
+    displacement: 4.9881093935790695,
+    seed: 0.08013172338090008,
+    position: [-0.2816110610961914, -0.43914794921875],
+    zoom: .72,
+    spacing: 4.27
+  };
+
+  const DARK = {
+    colors: ['#0b1240','#2b2f9e','#6a35c2','#d9a21b'],
+    base: '#000000'
+  };
+
+  P.mode = 0;
+
+  const hex = h =>
+    [1,3,5].map(
+      i => parseInt(h.slice(i,i+2),16)/255
+    );
+
+  const vs = `attribute vec2 a; varying vec2 vPosition;
+    void main(){
+      vPosition = a;
+      gl_Position = vec4(a,0.,1.);
+    }`;
+
+  const fs = `precision highp float;
+
+    uniform vec3 color1,color2,color3,color4;
+    uniform float colorSize,colorSpacing,colorSpread,colorRotation,displacement,zoom,spacing,seed;
+    uniform vec2 viewportSize,colorOffset,transformPosition;
+    uniform float noiseSize,noiseIntensity;
+    uniform vec3 baseColor,titleColor;
+    uniform sampler2D textTex;
+    uniform float scrollY, heroH;
+    uniform vec4 lens;
+    uniform vec3 glass;
+    varying vec2 vPosition;
+
+    vec3 hash3(vec3 p){
+      p = fract(p * vec3(.1031,.1030,.0973));
+      p += dot(p, p.yxz + 33.33);
+      return fract((p.xxy + p.yxx) * p.zyx);
+    }
+
+    vec4 gnoise(vec3 x){
+      vec3 p = floor(x), w = fract(x);
+      vec3 u = w*w*w*(w*(w*6.-15.)+10.);
+      vec3 du = 30.*w*w*(w*(w-2.)+1.);
+
+      vec3 ga=hash3(p), gb=hash3(p+vec3(1,0,0)), gc=hash3(p+vec3(0,1,0)), gd=hash3(p+vec3(1,1,0));
+      vec3 ge=hash3(p+vec3(0,0,1)), gf=hash3(p+vec3(1,0,1)), gg=hash3(p+vec3(0,1,1)), gh=hash3(p+vec3(1,1,1));
+
+      float va=dot(ga,w), vb=dot(gb,w-vec3(1,0,0)), vc=dot(gc,w-vec3(0,1,0)), vd=dot(gd,w-vec3(1,1,0));
+      float ve=dot(ge,w-vec3(0,0,1)), vf=dot(gf,w-vec3(1,0,1)), vg=dot(gg,w-vec3(0,1,1)), vh=dot(gh,w-vec3(1,1,1));
+
+      return vec4(
+        va + u.x*(vb-va) + u.y*(vc-va) + u.z*(ve-va) +
+        u.x*u.y*(va-vb-vc+vd) +
+        u.y*u.z*(va-vc-ve+vg) +
+        u.z*u.x*(va-vb-ve+vf) +
+        (-va+vb+vc-vd+ve-vf-vg+vh)*u.x*u.y*u.z,
+
+        ga + u.x*(gb-ga) + u.y*(gc-ga) + u.z*(ge-ga) +
+        u.x*u.y*(ga-gb-gc+gd) +
+        u.y*u.z*(ga-gc-ge+gg) +
+        u.z*u.x*(ga-gb-ge+gf) +
+        (-ga+gb+gc-gd+ge-gf-gg+gh)*u.x*u.y*u.z
+        + du * (
+          vec3(vb,vc,ve) - va +
+          u.yzx*vec3(
+            va-vb-vc+vd,
+            va-vc-ve+vg,
+            va-vb-ve+vf
+          ) +
+          u.zxy*vec3(
+            va-vb-ve+vf,
+            va-vb-vc+vd,
+            va-vc-ve+vg
+          ) +
+          u.yzx*u.zxy*
+          (-va+vb+vc-vd+ve-vf-vg+vh)
+        )
+      );
+    }
+
+    float hash2(vec2 p){
+      p = 50.*fract(p*.3183099 + vec2(.71,.113));
+      return -1.+2.*fract(p.x*p.y*(p.x+p.y));
+    }
+
+    float vnoise(vec2 p){
+      vec2 i=floor(p), f=fract(p), u=f*f*(3.-2.*f);
+      return mix(
+        mix(hash2(i),hash2(i+vec2(1,0)),u.x),
+        mix(hash2(i+vec2(0,1)),hash2(i+vec2(1,1)),u.x),
+        u.y
+      );
+    }
+
+    vec2 rotate(vec2 v, float a){
+      float s=sin(a), c=cos(a);
+      return mat2(c,-s,s,c)*v;
+    }
+
+    vec3 scene(vec2 fp){
+
+      vec2 hf = fp - vec2(0., scrollY);
+
+      if (hf.y < viewportSize.y - heroH)
+        return baseColor;
+
+      vec2 position =
+        hf / viewportSize * 2. - 1.;
+
+      position.x *=
+        min(1., viewportSize.x / viewportSize.y);
+
+      position.y *=
+        min(1., viewportSize.y / viewportSize.x);
+
+      position /= zoom;
+      position += transformPosition;
+
+      vec3 dn =
+        gnoise(vec3(position*.5+.5, seed)).xyz;
+
+      position += dn.xz * displacement;
+
+      vec2 q = position - colorOffset;
+
+      q =
+        mod(q - spacing, vec2(spacing*2.))
+        - spacing;
+
+      q = rotate(q, -colorRotation);
+
+      q /= vec2(colorSize);
+
+      q *= vec2(1./colorSpread, 1.);
+
+      vec3 c = baseColor;
+
+      c = mix(
+        color1,
+        c,
+        smoothstep(
+          0.,
+          1.,
+          distance(q, vec2(0., colorSpacing*1.5))
+        )
+      );
+
+      c = mix(
+        color2,
+        c,
+        smoothstep(
+          0.,
+          1.,
+          distance(q, vec2(0., colorSpacing*.5))
+        )
+      );
+
+      c = mix(
+        color3,
+        c,
+        smoothstep(
+          0.,
+          1.,
+          distance(q, vec2(0., -colorSpacing*.5))
+        )
+      );
+
+      c = mix(
+        color4,
+        c,
+        smoothstep(
+          0.,
+          1.,
+          distance(q, vec2(0., -colorSpacing*1.5))
+        )
+      );
+
+      vec2 tuv = vec2(
+        hf.x / viewportSize.x,
+        (hf.y - (viewportSize.y - heroH)) / heroH
+      );
+
+      return mix(
+        c,
+        titleColor,
+        texture2D(textTex, tuv).a
+      );
+    }
+
+    float sdBox(vec2 p, vec2 b, float r){
+      vec2 q = abs(p) - b + r;
+      return length(max(q,0.))
+        + min(max(q.x,q.y),0.) - r;
+    }
+
+    void main(){
+
+      vec2 fp = gl_FragCoord.xy;
+      vec3 c = scene(fp);
+
+      vec2 p = fp - lens.xy;
+      float r = min(lens.z, lens.w) * .9;
+      float d = sdBox(p, lens.zw, r);
+
+      if (d < 1.) {
+
+        vec2 e = vec2(1., 0.);
+
+        vec2 n = normalize(
+          vec2(
+            sdBox(p+e.xy, lens.zw, r) -
+            sdBox(p-e.xy, lens.zw, r),
+
+            sdBox(p+e.yx, lens.zw, r) -
+            sdBox(p-e.yx, lens.zw, r)
+          ) + 1e-5
+        );
+
+        float t =
+          clamp(-d / glass.x, 0., 1.);
+
+        float bend =
+          pow(1. - t, 3.) * glass.y;
+
+        vec2 base =
+          lens.xy + p * vec2(.96, .72);
+
+        vec3 col;
+
+        col.r =
+          scene(
+            base +
+            n * bend * (1. + glass.z)
+          ).r;
+
+        col.g =
+          scene(
+            base + n * bend
+          ).g;
+
+        col.b =
+          scene(
+            base +
+            n * bend * (1. - glass.z)
+          ).b;
+
+        float rim =
+          pow(1. - t, 2.);
+
+        vec2 L =
+          normalize(vec2(-.6, .8));
+
+        float spec =
+          pow(max(dot(n, L), 0.), 2.) +
+          .5 * pow(max(dot(n, -L), 0.), 3.);
+
+        col +=
+          spec * rim * .38 +
+          .035 +
+          rim * .05;
+
+        c =
+          mix(
+            c,
+            col,
+            1. - smoothstep(-1., 1., d)
+          );
+      }
+
+      float grain =
+        vnoise(
+          vPosition *
+          viewportSize /
+          noiseSize
+        );
+
+      c +=
+        grain *
+        noiseIntensity *
+        step(
+          viewportSize.y - heroH,
+          fp.y - scrollY
+        );
+
+      gl_FragColor =
+        vec4(
+          clamp(c,0.,1.),
+          1.
+        );
+    }`;
+
+  const mk = (t, s) => {
+    const o = gl.createShader(t);
+    gl.shaderSource(o, s);
+    gl.compileShader(o);
+    return o;
+  };
+
+  const prog = gl.createProgram();
+
+  gl.attachShader(
+    prog,
+    mk(gl.VERTEX_SHADER, vs)
+  );
+
+  gl.attachShader(
+    prog,
+    mk(gl.FRAGMENT_SHADER, fs)
+  );
+
+  gl.linkProgram(prog);
+
+  if (!gl.getProgramParameter(
+    prog,
+    gl.LINK_STATUS
+  )) {
+    console.error(
+      gl.getProgramInfoLog(prog)
+    );
+    return;
+  }
+
+  gl.useProgram(prog);
+
+  gl.bindBuffer(
+    gl.ARRAY_BUFFER,
+    gl.createBuffer()
+  );
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      -1,-1,
+       3,-1,
+      -1, 3
+    ]),
+    gl.STATIC_DRAW
+  );
+
+  const al =
+    gl.getAttribLocation(
+      prog,
+      'a'
+    );
+
+  gl.enableVertexAttribArray(al);
+
+  gl.vertexAttribPointer(
+    al,
+    2,
+    gl.FLOAT,
+    false,
+    0,
+    0
+  );
+
+  const U =
+    n => gl.getUniformLocation(
+      prog,
+      n
+    );
+
+  const loc = {};
+
+  [
+    'color1',
+    'color2',
+    'color3',
+    'color4',
+    'colorSize',
+    'colorSpacing',
+    'colorSpread',
+    'colorRotation',
+    'displacement',
+    'zoom',
+    'spacing',
+    'seed',
+    'viewportSize',
+    'colorOffset',
+    'transformPosition',
+    'noiseSize',
+    'noiseIntensity',
+    'baseColor',
+    'titleColor',
+    'textTex',
+    'lens',
+    'glass',
+    'scrollY',
+    'heroH'
+  ].forEach(
+    n => loc[n] = U(n)
+  );
+
+  const O = {
+    seed:0,
+    disp:0,
+    rot:0,
+    px:0,
+    py:0
+  };
+
+  const T = {
+    seed:0,
+    disp:0,
+    rot:0,
+    px:0,
+    py:0
+  };
+
+  let W = 1;
+  let H = 1;
+  let dirty = true;
+
+  const GLASS = {
+    thickness:90,
+    bevel:30,
+    chromatic:.28
+  };
+
+  const navEl =
+    document.querySelector('.nav');
+
+  const heroEl =
+    document.querySelector('.top');
+
+  const firstEl =
+    document.querySelector('.first');
+
+  const glassCv =
+    document.getElementById('glass');
+
+  const gctx =
+    glassCv.getContext('2d');
+
+  const tex =
+    gl.createTexture();
+
+  gl.activeTexture(
+    gl.TEXTURE0
+  );
+
+  gl.bindTexture(
+    gl.TEXTURE_2D,
+    tex
+  );
+
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    1,
+    1,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    new Uint8Array([
+      0,0,0,0
+    ])
+  );
+
+  [
+    [gl.TEXTURE_MIN_FILTER, gl.LINEAR],
+    [gl.TEXTURE_MAG_FILTER, gl.LINEAR],
+    [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE],
+    [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]
+  ].forEach(
+    ([a,b]) =>
+      gl.texParameteri(
+        gl.TEXTURE_2D,
+        a,
+        b
+      )
+  );
+
+  gl.uniform1i(
+    loc.textTex,
+    0
+  );
+
+  let fontReady = false;
+
+  function buildText(){
+
+    if (!fontReady)
+      return;
+
+    const t =
+      document.createElement(
+        'canvas'
+      );
+
+    t.width = W;
+
+    t.height =
+      Math.max(
+        1,
+        Math.round(
+          heroEl.offsetHeight
+        )
+      );
+
+    const x =
+      t.getContext('2d');
+
+    const lines = [
+      'GGSIP University USS',
+      'ACM Student Chapter'
+    ];
+
+    const boxW =
+      Math.min(
+        987,
+        W * .9
+      );
+
+    let fs =
+      Math.min(
+        83.56,
+        W * .084
+      );
+
+    const face =
+      s =>
+        `800 ${s}px "DM Sans", Helvetica, Arial, sans-serif`;
+
+    x.font =
+      face(fs);
+
+    const wide =
+      Math.max(
+        ...lines.map(
+          l =>
+            x.measureText(l).width
+        )
+      );
+
+    if (wide > boxW) {
+      fs *=
+        boxW / wide;
+
+      x.font =
+        face(fs);
+    }
+
+    const lh =
+      fs * 1.28;
+
+    const y0 =
+      (
+        firstEl.offsetHeight -
+        lh * lines.length
+      ) / 2;
+
+    x.fillStyle =
+      '#fff';
+
+    x.textBaseline =
+      'middle';
+
+    lines.forEach(
+      (l,i) =>
+        x.fillText(
+          l,
+          (W - boxW) / 2,
+          y0 + lh * (i + .5)
+        )
+    );
+
+    gl.activeTexture(
+      gl.TEXTURE0
+    );
+
+    gl.bindTexture(
+      gl.TEXTURE_2D,
+      tex
+    );
+
+    gl.pixelStorei(
+      gl.UNPACK_FLIP_Y_WEBGL,
+      true
+    );
+
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      t
+    );
+
+    dirty = true;
+  }
+
+  const ready =
+    () => {
+      fontReady = true;
+      buildText();
+    };
+
+  new ResizeObserver(
+    buildText
+  ).observe(heroEl);
+
+  document.fonts
+    .load(
+      '800 83px "DM Sans"'
+    )
+    .then(
+      ready,
+      ready
+    );
+
+  function resize(){
+
+    W =
+      document.documentElement
+        .clientWidth;
+
+    H =
+      document.documentElement
+        .clientHeight;
+
+    canvas.width = W;
+    canvas.height = H;
+
+    gl.viewport(
+      0,
+      0,
+      W,
+      H
+    );
+
+    dirty = true;
+
+    buildText();
+  }
+
+  addEventListener(
+    'resize',
+    resize
+  );
+
+  resize();
+
+  function draw(){
+
+    const k = P.mode;
+
+    const mx =
+      (a,b) =>
+        a.map(
+          (v,i) =>
+            v +
+            (b[i]-v)*k
+        );
+
+    P.colors.forEach(
+      (c,i) =>
+        gl.uniform3fv(
+          loc['color'+(i+1)],
+          mx(
+            hex(c),
+            hex(DARK.colors[i])
+          )
+        )
+    );
+
+    gl.uniform3fv(
+      loc.baseColor,
+      mx(
+        [1,1,1],
+        hex(DARK.base)
+      )
+    );
+
+    gl.uniform1f(
+      loc.colorSize,
+      P.colorSize
+    );
+
+    gl.uniform1f(
+      loc.colorSpacing,
+      P.colorSpacing
+    );
+
+    gl.uniform1f(
+      loc.colorSpread,
+      P.colorSpread
+    );
+
+    gl.uniform1f(
+      loc.colorRotation,
+      P.colorRotation + O.rot
+    );
+
+    gl.uniform1f(
+      loc.displacement,
+      P.displacement +
+      O.disp +
+      Math.sin(
+        Math.PI*k
+      ) * 1.4
+    );
+
+    gl.uniform1f(
+      loc.zoom,
+      P.zoom
+    );
+
+    gl.uniform1f(
+      loc.spacing,
+      P.spacing
+    );
+
+    gl.uniform1f(
+      loc.seed,
+      P.seed + O.seed
+    );
+
+    gl.uniform2f(
+      loc.viewportSize,
+      W,
+      H
+    );
+
+    gl.uniform2fv(
+      loc.colorOffset,
+      P.colorOffset
+    );
+
+    gl.uniform2f(
+      loc.transformPosition,
+      P.position[0] + O.px,
+      P.position[1] + O.py
+    );
+
+    gl.uniform1f(
+      loc.noiseSize,
+      .5
+    );
+
+    gl.uniform1f(
+      loc.noiseIntensity,
+      .04 + .03*k
+    );
+
+    const nb =
+      navEl.getBoundingClientRect();
+
+    gl.uniform3fv(
+      loc.titleColor,
+      mx(
+        [.067,.067,.067],
+        hex('#f4f5ff')
+      )
+    );
+
+    gl.uniform4f(
+      loc.lens,
+      nb.left + nb.width/2,
+      H - (nb.top + nb.height/2),
+      nb.width/2,
+      nb.height/2
+    );
+
+    gl.uniform3f(
+      loc.glass,
+      GLASS.bevel,
+      GLASS.thickness,
+      GLASS.chromatic
+    );
+
+    gl.uniform1f(
+      loc.scrollY,
+      Math.max(
+        0,
+        window.scrollY
+      )
+    );
+
+    gl.uniform1f(
+      loc.heroH,
+      heroEl.offsetHeight
+    );
+
+    gl.drawArrays(
+      gl.TRIANGLES,
+      0,
+      3
+    );
+
+    const gw =
+      Math.max(
+        1,
+        Math.round(nb.width)
+      );
+
+    const gh =
+      Math.max(
+        1,
+        Math.round(nb.height)
+      );
+
+    if (
+      glassCv.width !== gw ||
+      glassCv.height !== gh
+    ) {
+      glassCv.width = gw;
+      glassCv.height = gh;
+    }
+
+    gctx.drawImage(
+      canvas,
+      nb.left,
+      nb.top,
+      nb.width,
+      nb.height,
+      0,
+      0,
+      gw,
+      gh
+    );
+  }
+
+  (function loop(){
+    if (dirty) {
+      draw();
+      dirty = false;
+    }
+
+    requestAnimationFrame(loop);
+  })();
+
+  const ease =
+    t =>
+      t < .5
+        ? 4*t*t*t
+        : 1 -
+          Math.pow(
+            -2*t+2,
+            3
+          )/2;
+
+  function tween(to, ms){
+
+    const from = {};
+
+    for (
+      const k in to
+    )
+      from[k] = P[k];
+
+    const t0 =
+      performance.now();
+
+    (function step(now){
+
+      const t =
+        Math.min(
+          1,
+          (now-t0)/ms
+        );
+
+      const e =
+        ease(t);
+
+      for (
+        const k in to
+      )
+        P[k] =
+          from[k] +
+          (to[k]-from[k])*e;
+
+      dirty = true;
+
+      if (t < 1)
+        requestAnimationFrame(
+          step
+        );
+
+    })(t0);
+  }
+
+  const target = {
+    colorSize:P.colorSize,
+    displacement:P.displacement
+  };
+
+  P.colorSize = 0;
+  P.displacement = 1.5;
+
+  tween(
+    target,
+    2200
+  );
+
+  let px = null;
+  let py = null;
+
+  addEventListener(
+    'pointermove',
+    e => {
+
+      const mx =
+        e.clientX / W;
+
+      const my =
+        e.clientY / H;
+
+      if (px !== null)
+        T.seed +=
+          Math.hypot(
+            e.clientX-px,
+            e.clientY-py
+          ) /
+          W *
+          1.6;
+
+      px = e.clientX;
+      py = e.clientY;
+
+      T.rot =
+        (mx-.5)*1.2;
+
+      T.disp =
+        (.5-my)*3;
+
+      T.px =
+        (mx-.5)*.5;
+
+      T.py =
+        (.5-my)*.5;
+    }
+  );
+
+  addEventListener(
+    'pointerleave',
+    () => {
+      px = py = null;
+    }
+  );
+
+  addEventListener(
+    'scroll',
+    () => {
+      dirty = true;
+    },
+    { passive:true }
+  );
+
+  (function follow(){
+
+    for (
+      const k in O
+    ) {
+
+      const d =
+        T[k]-O[k];
+
+      if (
+        Math.abs(d)>1e-4
+      ) {
+        O[k] += d*.07;
+        dirty = true;
+      }
+    }
+
+    requestAnimationFrame(
+      follow
+    );
+
+  })();
+
+  let dark = false;
+  let modeTok = 0;
+
+  const modeBtn =
+    document.getElementById(
+      'mode'
+    );
+
+  modeBtn.addEventListener(
+    'click',
+    () => {
+
+      dark = !dark;
+
+      document.documentElement.dataset.theme =
+        dark
+          ? 'dark'
+          : 'light';
+
+      modeBtn.textContent =
+        dark
+          ? 'Light mode'
+          : 'Dark mode';
+
+      modeBtn.setAttribute(
+        'aria-pressed',
+        dark
+      );
+
+      const tok =
+        ++modeTok;
+
+      const from =
+        P.mode;
+
+      const to =
+        dark ? 1 : 0;
+
+      const t0 =
+        performance.now();
+
+      const ms =
+        1400;
+
+      (function step(now){
+
+        if (
+          tok !== modeTok
+        )
+          return;
+
+        const t =
+          Math.min(
+            1,
+            (now-t0)/ms
+          );
+
+        P.mode =
+          from +
+          (to-from) *
+          ease(t);
+
+        dirty = true;
+
+        if (t < 1)
+          requestAnimationFrame(
+            step
+          );
+
+      })(t0);
+    }
+  );
+
+  document
+    .getElementById('shuffle')
+    .addEventListener(
+      'click',
+      () => {
+
+        tween(
+          {
+            seed:
+              Math.random()*.6-.3,
+
+            displacement:
+              1 +
+              Math.random()*4
+          },
+          1200
+        );
+
+      }
+    );
+
+})();
+</script>
+
+<!-- React / GlassSurface -->
+<script
+  type="module"
+  src="/src/main.jsx">
+</script>
+
+</body>
+</html>
