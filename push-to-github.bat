@@ -4,6 +4,7 @@ set LOG=%~dp0push-log.txt
 echo ==== %date% %time% ==== > "%LOG%"
 where git >> "%LOG%" 2>&1 || (echo GIT NOT INSTALLED >> "%LOG%" & echo Git is not installed. & pause & exit /b 1)
 if not exist .git git init >> "%LOG%" 2>&1
+(echo push-log.txt& echo push-to-github.bat) >> .git\info\exclude
 git config user.name >nul 2>&1 || git config user.name "Harshpro0501"
 git config user.email >nul 2>&1 || git config user.email "Harshpro0501@users.noreply.github.com"
 git add -A >> "%LOG%" 2>&1
